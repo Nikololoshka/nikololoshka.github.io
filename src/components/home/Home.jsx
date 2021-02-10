@@ -31,7 +31,7 @@ const Home = (props) => {
         <Grid container className={classes.root} >
             <Grid item xs={12} md={6}>
                 <Card variant="outlined">
-                    <CardActionArea component={NavLink} to={props.links.stankinschedule.path}>
+                    <CardActionArea component={NavLink} to={props.links.stankinSchedule.path}>
                         <CardMedia
                             className={classes.media}
                             image={STATIC_PATH + "/app_overview.png"}

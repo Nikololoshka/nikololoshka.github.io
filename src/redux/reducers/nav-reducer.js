@@ -4,9 +4,13 @@ let initialState = {
         name: "Главная",
         path: "/"
     },
-    stankinschedule: {
+    stankinSchedule: {
         name: "Stankin Schedule",
         path: "/stankinschedule/overview"
+    },
+    stankinGoogleCalendarList: {
+        name: "Calendars",
+        path: "/stankin_google_calendar/list"
     }
 };
 

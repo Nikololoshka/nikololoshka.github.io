@@ -9,6 +9,7 @@ import {Route} from "react-router-dom";
 import StankinScheduleOverview from "./components/stankinschedule/StankinScheduleOverview";
 import MainDrawerContainer from "./components/common/MainDrawerContainer";
 import HomeContainer from "./components/home/HomeContainer";
+import StankinGoogleCalendarList from "./components/stankingooglecalendar/StankinGoogleScheduleList";
 
 
 const useStyles = makeStyles(() => ({
@@ -26,16 +27,18 @@ const App = () => {
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
-            <MainAppBar />
-            <MainDrawerContainer />
+            <CssBaseline/>
+            <MainAppBar/>
+            <MainDrawerContainer/>
             <main className={classes.content}>
                 <Toolbar/>
                 <div>
                     <Route exact path="/"
-                           render={() => <HomeContainer/> } />
+                           render={() => <HomeContainer/>}/>
                     <Route exact path="/stankinschedule/overview"
-                           render={() => <StankinScheduleOverview/>} />
+                           render={() => <StankinScheduleOverview/>}/>
+                    <Route exact path="/stankin_google_calendar/list"
+                           render={() => <StankinGoogleCalendarList/>}/>
                 </div>
             </main>
         </div>

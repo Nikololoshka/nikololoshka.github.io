@@ -6,6 +6,7 @@ import Drawer from "@material-ui/core/Drawer";
 import {NavLink} from "react-router-dom";
 import PhoneAndroid from "@material-ui/icons/PhoneAndroid";
 import HomeIcon from '@material-ui/icons/Home';
+import EventNoteIcon from '@material-ui/icons/EventNote';
 
 
 const drawerWidth = 300;
@@ -45,13 +46,23 @@ const WebsiteDrawer = (props) => {
                     </ListItem>
                     <ListItem button
                               component={NavLink}
-                              to={props.links.stankinschedule.path}
+                              to={props.links.stankinSchedule.path}
                               activeClassName={"Mui-selected"}>
                         <ListItemIcon>
                             <PhoneAndroid/>
                         </ListItemIcon>
                         <ListItemText
-                            primary={props.links.stankinschedule.name}/>
+                            primary={props.links.stankinSchedule.name}/>
+                    </ListItem>
+                    <ListItem button
+                              component={NavLink}
+                              to={props.links.stankinGoogleCalendarList.path}
+                              activeClassName={"Mui-selected"}>
+                        <ListItemIcon>
+                            <EventNoteIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={props.links.stankinGoogleCalendarList.name}/>
                     </ListItem>
                 </List>
             </div>
