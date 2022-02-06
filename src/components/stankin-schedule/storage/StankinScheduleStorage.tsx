@@ -7,18 +7,15 @@ import {
     Select,
     SelectChangeEvent,
     Box,
-    Divider,
-    Grid
+    Grid,
+    Link
 } from '@mui/material';
 
 import ContentBox from 'components/common/ContentBox';
-import {useSearchParams} from 'react-router-dom';
 import ScheduleStorageV0 from "./v0/ScheduleStorageV0";
 
 
 const StankinScheduleStorage = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-
     const [version, setVersion] = React.useState('0');
 
     const handleVersionChange = (event: SelectChangeEvent) => {
@@ -37,7 +34,7 @@ const StankinScheduleStorage = () => {
                     Хранилище расписаний
                 </Typography>
 
-                <FormControl sx={{minWidth: 160}}>
+                <FormControl variant='outlined' sx={{minWidth: 160}}>
                     <InputLabel id='version-select-label'>Версия</InputLabel>
                     <Select
                         labelId='version-select-label'
@@ -46,13 +43,17 @@ const StankinScheduleStorage = () => {
                         onChange={handleVersionChange}
                     >
                         <MenuItem value='0'>Storage v0</MenuItem>
-                        <MenuItem value='1'>Storage v1</MenuItem>
+                        {/*<MenuItem value='1'>Storage v1</MenuItem>*/}
                     </Select>
                 </FormControl>
             </Box>
 
-            <Typography paragraph>
-                Расписания формата JSON, которые используются в приложении Stankin Schedule.
+            <Typography paragraph sx={{marginTop: 1}}>
+                Актуальные расписания формата JSON, которые используются в приложении Stankin Schedule.
+                Архив со всеми расписаниями можно найти на&nbsp;
+                <Link href="https://drive.google.com/drive/folders/1SDNHA09gC-627s4_ahDAK68xwFKmPvYe?usp=sharing">
+                    Google Drive
+                </Link>
             </Typography>
 
             <Box sx={{marginTop: 1}}>

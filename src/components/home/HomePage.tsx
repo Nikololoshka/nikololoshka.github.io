@@ -31,7 +31,7 @@ const HomePage = () => {
             </Typography>
 
             <ul>
-                {'Kotlin (Android); Java; Python (Jupyter notebook, Numpy, Pandos, OpenCV); C++ (Qt и QML); TypeScript (React)'
+                {'Java и Kotlin (Android); Python (Jupyter notebook, Numpy, Pandos, OpenCV); C++ (Qt и QML); TypeScript (React)'
                     .split('; ').map((text) =>
                         <li>
                             {text}

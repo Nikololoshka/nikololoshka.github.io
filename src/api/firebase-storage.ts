@@ -48,7 +48,7 @@ export const getStorageV0Categories = async (): Promise<ICategoryItem[]> => {
 export const getStorageV0Category = async (category: string) => {
     const root = ref(storage, STORAGE_API_V0);
     const folder = ref(root, category);
-    const stream = await getStream(folder);
+    return getStream(folder);
 }
 
 export const getStorageV0Schedule = async (categoryPath: string, schedulePath: string) => {

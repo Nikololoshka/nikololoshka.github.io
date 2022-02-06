@@ -29,7 +29,7 @@ const ScheduleStorageV0 = () => {
         if (categories == null) {
             fetchScheduleStorage();
         }
-    }, [categories]);
+    }, [categories, fetchScheduleStorage]);
 
     if (loading) {
         return (
@@ -64,7 +64,7 @@ const ScheduleStorageV0 = () => {
 
             {categories?.map((category, index) => (
                 <TabPanel key={index} index={index} value={tab} >
-                    <ScheduleCategory categoryName={category.name} />
+                    <ScheduleCategory categoryItem={category} />
                 </TabPanel>
             ))}
         </div>

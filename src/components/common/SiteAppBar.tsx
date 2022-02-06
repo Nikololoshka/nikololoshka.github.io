@@ -28,7 +28,7 @@ const SiteAppBar: FC<SiteAppBarProps> = ({
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                     <Tooltip title="Go to repository">
-                        <IconButton href='#'>
+                        <IconButton href='https://github.com/Nikololoshka/nikololoshka.github.io'>
                             <Icon><img src={GitIcon} alt='GitHub site repository' /></Icon>
                         </IconButton>
                     </Tooltip>

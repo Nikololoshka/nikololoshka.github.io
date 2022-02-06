@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {CategoryState, IScheduleItem} from "types/schedule-types";
+import {CategoryState, ICategoryItem} from "types/schedule-types";
 import {useTypedSelector} from "hooks/use-typed-selector";
 import {useActions} from "hooks/use-actions";
 import {Button, CircularProgress, Grid, Typography} from "@mui/material";
@@ -7,12 +7,12 @@ import ScheduleCard from "./ScheduleCard";
 
 
 interface ScheduleCategoryProps {
-    categoryName: string;
+    categoryItem: ICategoryItem;
 }
 
-const ScheduleCategory: FC<ScheduleCategoryProps> = ({categoryName}) => {
+const ScheduleCategory: FC<ScheduleCategoryProps> = ({categoryItem}) => {
 
-    const [category, setCategory] = useState<CategoryState | null>(null);
+    const [categoryState, setCategoryState] = useState<CategoryState | null>(null);
 
     const {categories} = useTypedSelector(state => state.scheduleStorage);
 
@@ -21,21 +21,21 @@ const ScheduleCategory: FC<ScheduleCategoryProps> = ({categoryName}) => {
 
     useEffect(() => {
         if (categories != null) {
-            const newCategory = categories.find(item => item.name === categoryName) ?? null;
+            const newCategory = categories.find(item => item.path === categoryItem.path) ?? null;
             if (newCategory != null) {
-                setCategory(newCategory.state);
+                setCategoryState(newCategory.state);
             }
         }
-    }, [categories]);
+    }, [categories, categoryItem]);
 
     useEffect(() => {
-        if (category != null && category.schedules == null) {
-            fetchCategorySchedules(categoryName);
+        if (categoryState != null && categoryState.schedules == null) {
+            fetchCategorySchedules(categoryItem.path);
         }
-    }, [category]);
+    }, [categoryState, categoryItem, fetchCategorySchedules]);
 
 
-    if (category == null || category.schedules == null || category.loading) {
+    if (categoryState == null || categoryState.schedules == null || categoryState.loading) {
         return (
             <Grid container justifyContent='center'>
                 <CircularProgress/>
@@ -43,16 +43,16 @@ const ScheduleCategory: FC<ScheduleCategoryProps> = ({categoryName}) => {
         )
     }
 
-    if (category.error) {
+    if (categoryState.error) {
         return (
             <Grid container justifyContent='center'>
                 <Typography>
-                    {category.error}
+                    {categoryState.error}
                 </Typography>
                 <Button
                     variant='outlined'
                     color='error'
-                    onClick={() => fetchCategorySchedules(categoryName)}
+                    onClick={() => fetchCategorySchedules(categoryItem.path)}
                 >
                     Повторить
                 </Button>
@@ -63,9 +63,9 @@ const ScheduleCategory: FC<ScheduleCategoryProps> = ({categoryName}) => {
     return (
         <div>
             <Grid container spacing={2}>
-                {category.schedules.map(item =>
+                {categoryState.schedules.map(item =>
                     <Grid key={item.name} item xs={12} md={6} lg={3}>
-                        <ScheduleCard item={item} categoryPath={categoryName}/>
+                        <ScheduleCard item={item} categoryPath={categoryItem.path}/>
                     </Grid>
                 )}
             </Grid>

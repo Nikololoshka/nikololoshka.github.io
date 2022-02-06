@@ -1,7 +1,9 @@
 import React, {FC} from 'react';
 import {
     Box,
-    Card, CardContent, IconButton, styled, Typography
+    Card,
+    IconButton,
+    Typography
 } from "@mui/material";
 import {
     IScheduleItem
