@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.39d0e203.css",
-    "main.js": "/static/js/main.de809eaa.js",
+    "main.js": "/static/js/main.693cc426.js",
     "static/media/preview-7.png": "/static/media/preview-7.0aaca269ac7377bc3bd9.png",
     "static/media/preview-5.png": "/static/media/preview-5.bda5a6e4d15ccd145670.png",
     "static/media/schedule-description.jpg": "/static/media/schedule-description.9e8506a28aef97a94e1c.jpg",
@@ -15,10 +15,10 @@
     "static/media/git-icon.svg": "/static/media/git-icon.a43e21db13b5bd895f6795583dff6615.svg",
     "index.html": "/index.html",
     "main.39d0e203.css.map": "/static/css/main.39d0e203.css.map",
-    "main.de809eaa.js.map": "/static/js/main.de809eaa.js.map"
+    "main.693cc426.js.map": "/static/js/main.693cc426.js.map"
   },
   "entrypoints": [
     "static/css/main.39d0e203.css",
-    "static/js/main.de809eaa.js"
+    "static/js/main.693cc426.js"
   ]
 }
