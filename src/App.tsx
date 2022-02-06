@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+import {
+    HomePage,
+    StankinScheduleOverview,
+    StankinSchedulePolicy,
+    StankinScheduleTerms,
+    StankinScheduleEditor,
+    StankinScheduleStorage
+} from 'components';
+
+import SiteDrawer from 'components/common/SiteDrawer';
+
+
+const App = () => {
+    return (
+        <SiteDrawer title='Nikolay Vereshchagin Repository'>
+            <Routes>
+                <Route index element={<HomePage />} />
+                <Route path='/stankin-schedule' element={<StankinScheduleOverview />} />
+                <Route path='/stankin-schedule/terms' element={<StankinScheduleTerms />} />
+                <Route path='/stankin-schedule/policy' element={<StankinSchedulePolicy />} />
+                <Route path='/stankin-schedule/storage' element={<StankinScheduleStorage />} />
+                <Route path='/stankin-schedule-editor' element={<StankinScheduleEditor />} />
+            </Routes>
+        </SiteDrawer>
+    );
 }
 
 export default App;

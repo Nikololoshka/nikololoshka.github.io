@@ -1,0 +1,8 @@
+.github-pages-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.github-pages-info p {
+    flex-grow: 1;
+}
