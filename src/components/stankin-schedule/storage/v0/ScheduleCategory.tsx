@@ -26,13 +26,15 @@ const ScheduleCategory: FC<ScheduleCategoryProps> = ({categoryItem}) => {
                 setCategoryState(newCategory.state);
             }
         }
-    }, [categories, categoryItem]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categories]);
 
     useEffect(() => {
         if (categoryState != null && categoryState.schedules == null) {
             fetchCategorySchedules(categoryItem.path);
         }
-    }, [categoryState, categoryItem, fetchCategorySchedules]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categoryState]);
 
 
     if (categoryState == null || categoryState.schedules == null || categoryState.loading) {

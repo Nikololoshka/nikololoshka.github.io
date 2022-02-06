@@ -29,7 +29,8 @@ const ScheduleStorageV0 = () => {
         if (categories == null) {
             fetchScheduleStorage();
         }
-    }, [categories, fetchScheduleStorage]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categories]);
 
     if (loading) {
         return (
