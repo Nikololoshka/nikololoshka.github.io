@@ -24,24 +24,22 @@ import {
     preview7
 } from 'assets/images/preview';
 
-import './StankinScheduleOverview.css';
-
 
 const StankinScheduleOverview = () => {
 
     const previewImages = [
-        { img: preview1, title: 'Главная' },
-        { img: preview2, title: 'Список расписаний' },
-        { img: preview3, title: 'Просмотр расписания' },
-        { img: preview4, title: 'Редактирование расписания' },
-        { img: preview5, title: 'Виджет' },
-        { img: preview6, title: 'Модульный журнал' },
-        { img: preview7, title: 'Новости' }
+        {img: preview1, title: 'Главная'},
+        {img: preview2, title: 'Список расписаний'},
+        {img: preview3, title: 'Просмотр расписания'},
+        {img: preview4, title: 'Редактирование расписания'},
+        {img: preview5, title: 'Виджет'},
+        {img: preview6, title: 'Модульный журнал'},
+        {img: preview7, title: 'Новости'}
     ];
 
     return (
         <div>
-            <ContentBox sx={{ background: 'url(' + ScheduleDescription + ')', backgroundSize: 'cover', padding: 3 }}>
+            <ContentBox sx={{background: 'url(' + ScheduleDescription + ')', backgroundSize: 'cover', padding: 3}}>
                 <Typography variant='h4' gutterBottom color='common.white'>
                     Stankin Schedule
                 </Typography>
@@ -52,16 +50,16 @@ const StankinScheduleOverview = () => {
                 <Grid container spacing={2}>
                     <Grid item>
                         <a href='https://play.google.com/store/apps/details?id=com.vereshchagin.nikolay.stankinschedule'>
-                            <img src={GooglePlayBadge} alt={'Google play'} className='badge' />
+                            <img src={GooglePlayBadge} alt={'Google play'} className='badge'/>
                         </a>
                     </Grid>
                     <Grid item>
                         <a href='https://github.com/Nikololoshka/ProjectPepega'>
-                            <img src={GithubBadge} alt='Github' className='badge' />
+                            <img src={GithubBadge} alt='Github' className='badge'/>
                         </a>
                     </Grid>
                 </Grid>
-            </ContentBox >
+            </ContentBox>
             <ContentBox>
                 <Typography variant='h5'>
                     Особенности
@@ -75,11 +73,11 @@ const StankinScheduleOverview = () => {
                 <Typography variant='h5' gutterBottom>
                     Скриншоты
                 </Typography>
-                <ImageList cols={4} gap={16} >
-                    {previewImages.map(({ img, title }) =>
+                <ImageList cols={4} gap={16}>
+                    {previewImages.map(({img, title}) =>
                         <ImageListItem key={img}>
-                            <img src={img} srcSet={img} alt={title} loading="lazy" />
-                            <ImageListItemBar title={<b>{title}</b>} position="bottom" />
+                            <img src={img} srcSet={img} alt={title} loading="lazy"/>
+                            <ImageListItemBar title={<b>{title}</b>} position="bottom"/>
                         </ImageListItem>
                     )}
                 </ImageList>

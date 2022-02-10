@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { Provider } from 'react-redux';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { BrowserRouter } from 'react-router-dom';
-import { store } from './store/store';
+import {Provider} from 'react-redux';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
+import {HashRouter} from 'react-router-dom';
+import {store} from './store/store';
 import './index.css';
 
 
@@ -21,11 +21,11 @@ const theme = createTheme({
 ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>
-            <BrowserRouter>
+            <HashRouter>
                 <React.StrictMode>
-                    <App />
+                    <App/>
                 </React.StrictMode>
-            </BrowserRouter>
+            </HashRouter>
         </ThemeProvider>
     </Provider>,
     document.getElementById('root')

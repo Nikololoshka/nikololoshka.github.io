@@ -12,3 +12,16 @@ code {
 .flex-container {
     display: flex;
 }
+
+.description {
+    max-width: 40%;
+    padding: 1rem 0 3rem 0;
+}
+
+.badge {
+    width: 160px;
+}
+
+.preview {
+    width: 100%;
+}

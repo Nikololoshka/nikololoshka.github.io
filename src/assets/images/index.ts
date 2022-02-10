@@ -1,6 +1,7 @@
 import GithubBadge from './github-badge.png';
 import GooglePlayBadge from './google-play-badge.png';
 import ScheduleDescription from './schedule-description.jpg';
+import ScheduleEditorDescription from './schedule-editor-description.jpg';
 import GitIcon from './git-icon.svg';
 import SchedulePreview from './schedule-preview.png';
 
@@ -9,5 +10,6 @@ export {
 	GooglePlayBadge,
 	ScheduleDescription,
 	GitIcon,
-	SchedulePreview
+	SchedulePreview,
+	ScheduleEditorDescription
 };
