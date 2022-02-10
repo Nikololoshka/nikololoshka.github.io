@@ -1,24 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.39d0e203.css",
-    "main.js": "/static/js/main.17003e99.js",
+    "main.css": "/static/css/main.11e0b99a.css",
+    "main.js": "/static/js/main.6adba627.js",
     "static/media/preview-7.png": "/static/media/preview-7.0aaca269ac7377bc3bd9.png",
     "static/media/preview-5.png": "/static/media/preview-5.bda5a6e4d15ccd145670.png",
     "static/media/schedule-description.jpg": "/static/media/schedule-description.9e8506a28aef97a94e1c.jpg",
     "static/media/preview-6.png": "/static/media/preview-6.02f396c8021be9fc4450.png",
     "static/media/preview-1.png": "/static/media/preview-1.439a1d3efb540c13e461.png",
     "static/media/preview-3.png": "/static/media/preview-3.3fc1c5261da8c9895172.png",
+    "static/media/schedule-editor-description.jpg": "/static/media/schedule-editor-description.80e0490e51aebdc5809a.jpg",
     "static/media/preview-4.png": "/static/media/preview-4.fdde3eab5dbee4845025.png",
     "static/media/preview-2.png": "/static/media/preview-2.4e794a20bbc14d4b75f8.png",
     "static/media/google-play-badge.png": "/static/media/google-play-badge.ffe4fe1f10499038e9e9.png",
     "static/media/github-badge.png": "/static/media/github-badge.29a7c5b4ef4af9a41a1d.png",
     "static/media/git-icon.svg": "/static/media/git-icon.a43e21db13b5bd895f6795583dff6615.svg",
     "index.html": "/index.html",
-    "main.39d0e203.css.map": "/static/css/main.39d0e203.css.map",
-    "main.17003e99.js.map": "/static/js/main.17003e99.js.map"
+    "main.11e0b99a.css.map": "/static/css/main.11e0b99a.css.map",
+    "main.6adba627.js.map": "/static/js/main.6adba627.js.map"
   },
   "entrypoints": [
-    "static/css/main.39d0e203.css",
-    "static/js/main.17003e99.js"
+    "static/css/main.11e0b99a.css",
+    "static/js/main.6adba627.js"
   ]
 }
