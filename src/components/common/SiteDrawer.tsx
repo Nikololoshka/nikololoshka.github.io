@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, {FC, useState} from 'react';
 import {
     Drawer,
     Box,
     List,
     Toolbar,
     CssBaseline,
-    ListSubheader,
+    ListSubheader, styled,
 } from '@mui/material';
 import {
     Home,
@@ -18,8 +18,27 @@ import SiteAppDrawer from './SiteAppBar';
 import NavigationItem, { INavigationItem } from './NavigationItem';
 import NavigationCollapseItem, { INavigationCollapseItem } from './NavigationCollapseItem';
 
-
 const drawerWidth = 300;
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+    open?: boolean;
+}>(({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
+    }),
+}));
+
 
 interface SiteDrawerProps {
     title: string;
@@ -29,6 +48,8 @@ interface SiteDrawerProps {
 const SiteDrawer: FC<SiteDrawerProps> = ({
     title, children
 }) => {
+
+    const [isDrawerOpen, setDrawerOpen] = useState(window.innerWidth > 768);
 
     const location = useLocation();
 
@@ -71,16 +92,23 @@ const SiteDrawer: FC<SiteDrawerProps> = ({
         text: 'Небольшие проекты',
         icon: More,
         children: [
-
+            {
+                text: 'Crochet circle',
+                url: '/crochet/circle'
+            },
         ]
     }
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <SiteAppDrawer title={title} />
+            <SiteAppDrawer
+                title={title}
+                onDrawer={() => setDrawerOpen(!isDrawerOpen)} />
             <Drawer
-                variant="permanent"
+                variant="persistent"
+                anchor="left"
+                open={isDrawerOpen}
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
@@ -108,10 +136,10 @@ const SiteDrawer: FC<SiteDrawerProps> = ({
                     </List>
                 </Box>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1 }}>
+            <Main open={isDrawerOpen} sx={{ padding: 0 }}>
                 <Toolbar />
                 {children}
-            </Box>
+            </Main >
         </Box>
     );
 }

@@ -33,7 +33,7 @@ const HomePage = () => {
             <ul>
                 {'Java и Kotlin (Android); Python (Jupyter notebook, Numpy, Pandos, OpenCV); C++ (Qt и QML); TypeScript (React)'
                     .split('; ').map((text) =>
-                        <li>
+                        <li key={text}>
                             {text}
                         </li>
                     )
@@ -48,7 +48,7 @@ const HomePage = () => {
                 {('Kotlin + Java; Coroutines; Android SDK; Android Jetpack; Jetpack Compose; MVVM; Retrofit2 + OkHttp3; ' +
                     'Firebase (Storage, Analytics, Crashlytics); Dagger2; Glide'
                 ).split('; ').map((text) =>
-                    <li>
+                    <li key={text}>
                         {text}
                     </li>
                 )}

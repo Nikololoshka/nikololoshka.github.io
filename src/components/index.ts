@@ -4,6 +4,7 @@ import StankinSchedulePolicy from './stankin-schedule/StankinSchedulePolicy';
 import StankinScheduleTerms from './stankin-schedule/StankinScheduleTerms';
 import StankinScheduleStorage from './stankin-schedule/storage/StankinScheduleStorage';
 import StankinScheduleEditor from './stankin-schedule-editor/StankinScheduleEditor';
+import CrochetCirclePage from './other/CrochetCirclePage';
 
 export {
     HomePage,
@@ -11,5 +12,7 @@ export {
     StankinSchedulePolicy,
     StankinScheduleTerms,
     StankinScheduleStorage,
-    StankinScheduleEditor
+    StankinScheduleEditor,
+    CrochetCirclePage
 };
+

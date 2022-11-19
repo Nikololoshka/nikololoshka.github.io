@@ -1,0 +1,13 @@
+.crochet-sticky-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    position: sticky;
+    top: 64px;
+    padding: 24px;
+}
+
+.crochet-header-panel {
+    display: flex;
+    align-items: center;
+}

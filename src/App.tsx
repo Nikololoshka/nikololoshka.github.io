@@ -8,7 +8,8 @@ import {
     StankinSchedulePolicy,
     StankinScheduleTerms,
     StankinScheduleEditor,
-    StankinScheduleStorage
+    StankinScheduleStorage,
+    CrochetCirclePage
 } from 'components';
 
 import SiteDrawer from 'components/common/SiteDrawer';
@@ -24,6 +25,7 @@ const App = () => {
                 <Route path='/stankin-schedule/policy' element={<StankinSchedulePolicy />} />
                 <Route path='/stankin-schedule/storage' element={<StankinScheduleStorage />} />
                 <Route path='/stankin-schedule-editor' element={<StankinScheduleEditor />} />
+                <Route path='/crochet/circle' element={ <CrochetCirclePage />} />
             </Routes>
         </SiteDrawer>
     );
