@@ -1,21 +1,30 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, useEffect, useRef, useState} from 'react';
 import ContentBox from 'components/common/ContentBox';
 import {
-    AppBar,
-    Toolbar,
-    Box,
-    Button, ButtonGroup,
-    Dialog, DialogActions, DialogContent,
-    DialogTitle,
+    Button,
+    ButtonGroup,
     Divider,
-    Icon,
-    IconButton, ListItemIcon, ListItemText,
-    Menu, MenuItem,
-    TextField,
-    Typography, Stack, Tooltip, Paper, Switch, FormControlLabel, ToggleButton, ToggleButtonGroup
+    IconButton,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    Typography,
+    Stack,
+    Tooltip,
+    Paper,
+    ToggleButton,
+    ToggleButtonGroup
 } from "@mui/material";
-import {Add, BugReport, Edit, Settings, ZoomIn, ZoomOut} from "@mui/icons-material";
-
+import {
+    Add,
+    BugReport,
+    Edit,
+    Settings,
+    UploadFile,
+    ZoomIn,
+    ZoomOut
+} from "@mui/icons-material";
 import {
     ColorPickerRequest,
     ColorPickerDialog,
@@ -24,13 +33,16 @@ import {
 } from "./ColorPickerDialog";
 import FillIcon from "./FillIcon";
 import CrochetCircleSettingsDialog from "./CrochetCircleSettingsDialog";
-import {SchemeSettings} from "types/crochet-types";
+import CrochetSchemeImport, {CrochetSchemeImportResult} from './CrochetSchemeImport';
+import {
+    SchemeSettings,
+    SchemeColor, SchemeData
+} from "types/crochet-types";
+import {
+    resize
+} from "utils/utils"
 import './CrochetCirclePage.css';
 
-
-interface ColorScheme {
-    color: string;
-}
 
 const CrochetCirclePage = () => {
     const [isDebug, setDebug] = useState(false)
@@ -49,11 +61,10 @@ const CrochetCirclePage = () => {
         setCanvasZoom(newZoom)
     };
 
-    const [schemeSettings, setSchemeSettings] = useState<SchemeSettings>({
-        parts: 7,
-        radius: 10
-    });
+    const [schemeSettings, setSchemeSettings] = useState<SchemeSettings>({parts: 7, radius: 10});
     const [showSettingDialog, setShowSettingDialog] = useState(false);
+
+    const [showImport, setShowImport] = useState(false)
 
     const [scheme, setScheme] = useState({'beats': Array<number>()});
 
@@ -63,17 +74,12 @@ const CrochetCirclePage = () => {
     const [colorPickerData, setColorPickerData] = useState<null | ColorPickerRequest>(null);
     const showColorPicker = Boolean(colorPickerData);
 
-    const [colors, setColors] = useState(Array<ColorScheme>({color: '#FFFFFF'}));
+    const [colors, setColors] = useState(Array<SchemeColor>({color: '#FFFFFF'}));
     const [selectedColorIndex, setSelectedColorIndex] = useState(0);
     const selectedColor = colors[selectedColorIndex];
 
     useEffect(() => {
-        const {parts, radius} = schemeSettings;
-
-        setScheme({
-            'beats': Array((parts + parts * radius) / 2 * radius).fill(0)
-        })
-        setCanvasSize(radius * 2 * 20)
+        setCanvasSize(schemeSettings.radius * 2 * 20)
     }, [schemeSettings])
 
     useEffect(() => {
@@ -111,6 +117,7 @@ const CrochetCirclePage = () => {
             // фоновые окружности
             let rr = r * spacing + size + size / 2
             // console.log(rr)
+
 
             context.beginPath();
             context.fillStyle = "#000000"
@@ -192,6 +199,9 @@ const CrochetCirclePage = () => {
     }, [canvasSize, colors, canvasZoom, scheme, schemeSettings, isDebug]);
 
     const handleCanvasClick = (x: number, y: number) => {
+
+        console.log(scheme)
+
         const center = (canvasSize * canvasZoom) / 2;
         const r = Math.sqrt(Math.pow(x - center, 2) + Math.pow(y - center, 2))
 
@@ -278,6 +288,14 @@ const CrochetCirclePage = () => {
         }
     }
 
+    const handleSchemeImport = (newScheme: CrochetSchemeImportResult) => {
+        console.log(newScheme)
+
+        setColors([{color: "#ffffff"}, ...newScheme.scheme.colors])
+        setScheme({"beats": newScheme.scheme.data})
+        setSchemeSettings(newScheme.settings)
+    }
+
     return (
         <div>
             <Paper className="crochet-sticky-header" elevation={1}>
@@ -286,6 +304,16 @@ const CrochetCirclePage = () => {
                 </Typography>
 
                 <Stack className="crochet-header-panel" direction="row" spacing={1}>
+
+                    <Button
+                        component="label"
+                        variant="outlined"
+                        startIcon={<UploadFile/>}
+                        onClick={() => setShowImport(true)}
+                    >
+                        Импорт
+                    </Button>
+
                     <div>
                         <Button
                             id="show-color-menu"
@@ -407,21 +435,22 @@ const CrochetCirclePage = () => {
 
 
             <ContentBox>
+                <div>
+                    <div className="crochet-canvas-container">
+                        <canvas
+                            ref={canvasRef}
+                            width={canvasSize * canvasZoom}
+                            height={canvasSize * canvasZoom}
+                            onClick={(event) => {
+                                const canvas = event.target as HTMLCanvasElement
 
-                <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
-                    <canvas
-                        ref={canvasRef}
-                        width={canvasSize * canvasZoom}
-                        height={canvasSize * canvasZoom}
-                        onClick={(event) => {
-                            const canvas = event.target as HTMLCanvasElement
-
-                            handleCanvasClick(
-                                event.pageX - canvas.offsetLeft,
-                                event.pageY - canvas.offsetTop
-                            );
-                        }}
-                    />
+                                handleCanvasClick(
+                                    event.pageX - canvas.offsetLeft,
+                                    event.pageY - canvas.offsetTop
+                                );
+                            }}
+                        />
+                    </div>
                 </div>
 
                 <ColorPickerDialog
@@ -438,9 +467,23 @@ const CrochetCirclePage = () => {
                     config={schemeSettings}
                     onClose={result => {
                         if (result != null) {
+                            const {parts, radius} = schemeSettings
                             setSchemeSettings(result)
+
+                            const size = (parts + parts * radius) / 2 * radius
+                            setScheme({'beats': resize(scheme.beats, size, 0)})
                         }
                         setShowSettingDialog(false)
+                    }}
+                />
+
+                <CrochetSchemeImport
+                    open={showImport}
+                    onClose={(data) => {
+                        if (data != null) {
+                            handleSchemeImport(data)
+                        }
+                        setShowImport(false)
                     }}
                 />
 

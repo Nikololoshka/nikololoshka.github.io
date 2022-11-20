@@ -1,6 +1,15 @@
 import React, {FC, useEffect, useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
-import {HexColorInput, HexColorPicker} from "react-colorful";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle
+} from "@mui/material";
+import {
+    HexColorInput,
+    HexColorPicker
+} from "react-colorful";
 
 export interface ColorPickerRequest {
     id: number;
