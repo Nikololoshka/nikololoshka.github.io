@@ -48,7 +48,7 @@ const CrochetSchemeImport: FC<CrochetSchemeImportProps> = (
     {open, onClose}
 ) => {
 
-    const [schemeFile, setSchemeFile] = useState({name: "", text: ""})
+    const [schemeFile, setSchemeFile] = useState<FileData>({name: "", text: ""})
 
     const [parts, setParts] = useState(7);
     const [radius, setRadius] = useState(10);

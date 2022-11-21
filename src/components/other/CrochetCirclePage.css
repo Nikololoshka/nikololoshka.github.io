@@ -13,7 +13,5 @@
 }
 
 .crochet-canvas-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    overflow: auto;
 }

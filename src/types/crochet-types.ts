@@ -1,5 +1,5 @@
 export interface CircleScheme {
-    beats: Array<number>;
+    beads: Array<number>;
     settings: SchemeSettings;
 }
 

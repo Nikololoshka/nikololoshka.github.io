@@ -12,8 +12,8 @@ const FillIcon: FC<FillIconProps> = ({color}) => {
             sx={{
                 border: "1px solid #000000",
                 backgroundColor: color,
-                width: 24,
-                height: 24
+                width: 20,
+                height: 20
             }}
         />
     )

@@ -49,7 +49,7 @@ const SiteDrawer: FC<SiteDrawerProps> = ({
     title, children
 }) => {
 
-    const [isDrawerOpen, setDrawerOpen] = useState(window.innerWidth > 768);
+    const [isDrawerOpen, setDrawerOpen] = useState(false);
 
     const location = useLocation();
 
@@ -100,7 +100,7 @@ const SiteDrawer: FC<SiteDrawerProps> = ({
     }
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }} component="div">
             <CssBaseline />
             <SiteAppDrawer
                 title={title}
@@ -116,7 +116,7 @@ const SiteDrawer: FC<SiteDrawerProps> = ({
                 }}
             >
                 <Toolbar />
-                <Box sx={{ overflow: 'auto' }}>
+                <Box sx={{ overflow: 'auto' }} component="div">
                     <List>
                         <NavigationItem
                             item={navHome}

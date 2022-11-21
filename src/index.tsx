@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
 import {Provider} from 'react-redux';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import {HashRouter} from 'react-router-dom';
 import {store} from './store/store';
 import './index.css';
+import ReactDOM  from "react-dom/client";
 
 
 const theme = createTheme({
@@ -18,7 +18,9 @@ const theme = createTheme({
 });
 
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container!);
+root.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>
             <HashRouter>
@@ -28,5 +30,4 @@ ReactDOM.render(
             </HashRouter>
         </ThemeProvider>
     </Provider>,
-    document.getElementById('root')
 );
