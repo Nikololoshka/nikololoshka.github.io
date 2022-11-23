@@ -44,8 +44,12 @@ import {
 } from "utils/utils"
 import './CrochetCirclePage.css';
 import {useElementSize} from "usehooks-ts";
-import {computeSchemeCoords, drawScheme} from "./circle-scheme-draw";
-import {createJBBScheme} from "../../store/action-creators/crochet-circle-action";
+import {
+    computeSchemeCoords,
+    computePolyhedralSchemeCoords,
+    drawScheme,
+    drawPolyhedralScheme
+} from "./circle-scheme-draw";
 import CrochetSchemeExport from "./CrochetSchemeExport";
 
 
@@ -96,7 +100,7 @@ const CrochetCirclePage = () => {
     useEffect(() => {
         // @ts-ignore
         const canvas: CanvasRenderingContext2D = canvasRef.current.getContext('2d')
-        drawScheme(canvas, canvasSize, canvasZoom, scheme, colors, isDebug)
+        drawPolyhedralScheme(canvas, canvasSize, canvasZoom, scheme, colors, isDebug)
     }, [canvasSize, colors, canvasZoom, scheme, isDebug]);
 
     const handleUpdateColors = (newColors: Array<SchemeColor>) => {
@@ -108,7 +112,7 @@ const CrochetCirclePage = () => {
     }
 
     const handleCanvasClick = (x: number, y: number) => {
-        const index = computeSchemeCoords(x, y, canvasSize, canvasZoom, scheme.settings)
+        const index = computePolyhedralSchemeCoords(x, y, canvasSize, canvasZoom, scheme.settings)
         if (index === -1) return
 
         scheme.beads[index] = selectedColorIndex + 1
@@ -269,7 +273,7 @@ const CrochetCirclePage = () => {
                             onClose={() => setZoomAnchorEl(null)}
                             MenuListProps={{'aria-labelledby': 'zoom-select-button',}}
                         >
-                            {[1, 1.5, 2, 2.5, 3].map((zoom, index) =>
+                            {[1, 1.5, 2, 2.5, 3, 4, 5].map((zoom, index) =>
                                 <MenuItem
                                     key={index}
                                     onClick={() => {
@@ -313,10 +317,7 @@ const CrochetCirclePage = () => {
             <div ref={containerRef} style={{display: "block", width: "100%", height: "100%"}}>
                 <div
                     className="crochet-canvas-container"
-                    style={{
-                        maxWidth: containerSize.width,
-                        maxHeight: containerSize.height === 0 ? "100%" : containerSize.height
-                    }}
+                    style={{maxWidth: containerSize.width}}
                 >
                     <canvas
                         ref={canvasRef}
