@@ -50,7 +50,7 @@ export const parseJBBColors = (jbb: string): Array<SchemeColor> => {
 export const parseJBBScheme = (jbb: string, fillColor: number): SchemeData => {
     const colors = parseJBBColors(jbb)
 
-    const rowRegExp = /row\s?(.+)?\)/g
+    const rowRegExp = /row\s?(.+?)?\)/g
     const rawData = Array.from(jbb.matchAll(rowRegExp), (rowMatch) =>
         rowMatch[1].trim().split(" ").map((ch: string) => Number(ch))
     )

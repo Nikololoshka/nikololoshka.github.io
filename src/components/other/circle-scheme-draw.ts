@@ -23,19 +23,49 @@ export const drawScheme = (
 
     const {parts, radius} = scheme.settings;
 
+    const beadPaddingCount = 1 // start padding
+    const angleOffset = -180;
+
+    const partAngle = (360 / parts)
+    const schemaHeight = ch * 0.8
+    const schemaLevelHeight = schemaHeight / (radius + beadPaddingCount)
+
+    const beadHeight = schemaLevelHeight
+    const beadWidth = beadHeight * 0.8
+
     const startParts = parts;
     const startBeatSize = 10
-    const angleOffset = -90;
 
-    const beatSize = startBeatSize * scale;
-    const beatSpacing = startBeatSize * 1.5 * scale;
+
+    const step = 0.5
+    for (let i = 0; i < parts; i++) {
+        canvas.beginPath();
+        canvas.fillStyle = "#000000"
+        canvas.lineWidth = 4
+        for (let j = 0; j < radius - 1; j += step) {
+            const angle = (angleOffset + partAngle * i + swingIn(1 - j / radius) * parts) * Math.PI / 180
+            const angle2 = (angleOffset + partAngle * i + swingIn(1 - (j + step) / radius) * parts) * Math.PI / 180
+
+            canvas.moveTo(
+                cw + Math.cos(angle) * beadHeight * (j + 1.5),
+                ch + Math.sin(angle) * beadHeight * (j + 1.5 )
+            );
+            canvas.lineTo(
+                cw + Math.cos(angle2) * beadHeight * (j + step + 1.5),
+                ch + Math.sin(angle2) * beadHeight * (j + step + 1.5)
+            );
+        }
+        canvas.stroke();
+    }
+    canvas.lineWidth = 1
+
 
     let prevParts = 0
     for (let r = 0; r < radius; r++) {
         const levelParts = startParts * (r + 1);
 
         // фоновые окружности
-        let levelBackgroundRadius = r * beatSpacing + beatSize + beatSize / 2
+        let levelBackgroundRadius = (r + 1) * beadHeight + beadHeight / 2
 
         canvas.beginPath();
         canvas.fillStyle = "#000000"
@@ -53,21 +83,22 @@ export const drawScheme = (
 
         // бисеринки по кругу
         for (let i = 0; i < levelParts; i++) {
-            const angle = ((360 / levelParts) * i + angleOffset) * Math.PI / 180;
+            //  + swingIn(1 - r / radius) * parts
+            const angle = ((360 / levelParts) * i + angleOffset + swingIn(1 - r / radius) * parts) * Math.PI / 180;
             const colorId = scheme.beads.at(i + prevParts) ?? 1;
 
             canvas.fillStyle = colors[colorId - 1].color
 
-            const x = cw + Math.cos(angle) * beatSpacing * (r + 1) - beatSize / 2;
-            const y = ch + Math.sin(angle) * beatSpacing * (r + 1) - beatSize / 2;
+            const x = cw + Math.cos(angle) * beadHeight * (r + 1.5);
+            const y = ch + Math.sin(angle) * beadHeight * (r + 1.5);
 
             // бисеринка
             canvas.beginPath();
             canvas.ellipse(
-                x + beatSize / 2,
-                y + beatSize / 2,
-                beatSize / 1.5,
-                beatSize / 2,
+                x,
+                y,
+                beadHeight * 0.45,
+                beadWidth * 0.45,
                 angle,
                 0,
                 2 * Math.PI,
@@ -78,12 +109,16 @@ export const drawScheme = (
 
             if (isDebug) {
                 canvas.fillStyle = "#000000"
-                canvas.fillText((i + prevParts).toString(), x + beatSize / 3, y + beatSize / 2);
+                canvas.fillText((i + prevParts).toString(), x + beadWidth / 3, y + beadHeight / 2);
             }
         }
 
         prevParts += levelParts
     }
+}
+
+const swingIn = (a: number): number => {
+    return Math.pow(2.5 * a + 0.75, 2)
 }
 
 export const drawPolyhedralScheme = (
@@ -158,6 +193,9 @@ export const drawPolyhedralScheme = (
                 const y = ch + dx * Math.sin(currentAngle) + dy * Math.cos(currentAngle)
 
                 const colorId = scheme.beads.at(index++) ?? 1;
+                if (colors[colorId - 1] === undefined) {
+                    debugger
+                }
                 canvas.fillStyle = colors[colorId - 1].color
 
                 // бисеринка
@@ -236,7 +274,7 @@ export const computePolyhedralSchemeCoords = (
         return -1
     }
 
-    return ((parts + parts * levelIndex) / 2 * levelIndex)  + part * (levelIndex + 1) + orderIndex
+    return ((parts + parts * levelIndex) / 2 * levelIndex) + part * (levelIndex + 1) + orderIndex
 }
 
 export const computeSchemeCoords = (

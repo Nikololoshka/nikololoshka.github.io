@@ -114,7 +114,6 @@ const CrochetCirclePage = () => {
     const handleCanvasClick = (x: number, y: number) => {
         const index = computePolyhedralSchemeCoords(x, y, canvasSize, canvasZoom, scheme.settings)
         if (index === -1) return
-
         scheme.beads[index] = selectedColorIndex + 1
         setScheme({...scheme})
     };
@@ -152,9 +151,12 @@ const CrochetCirclePage = () => {
     const handleSchemeImport = (newScheme: CrochetSchemeImportResult) => {
         console.log(newScheme)
 
+        const {parts, radius} = newScheme.settings
+        const size = (parts + parts * radius) / 2 * radius
+
         handleUpdateColors([...newScheme.scheme.colors])
         setScheme({
-            beads: newScheme.scheme.data,
+            beads: resize(newScheme.scheme.data, size, 1),
             settings: newScheme.settings
         })
     }
