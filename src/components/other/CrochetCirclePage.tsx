@@ -13,15 +13,17 @@ import {
     Stack,
     Tooltip,
     Paper,
+    Checkbox,
     ToggleButton,
-    ToggleButtonGroup
+    ListSubheader,
+    ToggleButtonGroup, List, Radio
 } from "@mui/material";
 import {
     Add,
     BugReport,
     Edit, FileDownload,
     Settings,
-    UploadFile,
+    UploadFile, ViewComfy,
     ZoomIn,
     ZoomOut
 } from "@mui/icons-material";
@@ -48,7 +50,7 @@ import {
     computeSchemeCoords,
     computePolyhedralSchemeCoords,
     drawScheme,
-    drawPolyhedralScheme
+    drawPolyhedralScheme, DrawMethod
 } from "./circle-scheme-draw";
 import CrochetSchemeExport from "./CrochetSchemeExport";
 
@@ -83,6 +85,11 @@ const CrochetCirclePage = () => {
         }
     });
 
+    const [viewerMethod, setViewerMethod] = useState<DrawMethod>(DrawMethod.Polyhedral)
+
+    const [viewAnchorEl, setViewAnchorEl] = useState<null | HTMLElement>(null);
+    const showViewSettings = Boolean(viewAnchorEl);
+
     const [colorAnchorEl, setColorAnchorEl] = useState<null | HTMLElement>(null);
     const showColors = Boolean(colorAnchorEl);
 
@@ -100,8 +107,15 @@ const CrochetCirclePage = () => {
     useEffect(() => {
         // @ts-ignore
         const canvas: CanvasRenderingContext2D = canvasRef.current.getContext('2d')
-        drawPolyhedralScheme(canvas, canvasSize, canvasZoom, scheme, colors, isDebug)
-    }, [canvasSize, colors, canvasZoom, scheme, isDebug]);
+        switch (viewerMethod) {
+            case DrawMethod.Polyhedral:
+                drawPolyhedralScheme(canvas, canvasSize, canvasZoom, scheme, colors, isDebug)
+                break;
+            case DrawMethod.Circle:
+                drawScheme(canvas, canvasSize, canvasZoom, scheme, colors, isDebug)
+                break;
+        }
+    }, [viewerMethod, canvasSize, colors, canvasZoom, scheme, isDebug]);
 
     const handleUpdateColors = (newColors: Array<SchemeColor>) => {
         if (newColors.length === 0) {
@@ -112,7 +126,15 @@ const CrochetCirclePage = () => {
     }
 
     const handleCanvasClick = (x: number, y: number) => {
-        const index = computePolyhedralSchemeCoords(x, y, canvasSize, canvasZoom, scheme.settings)
+        let index: number = -1;
+        switch (viewerMethod) {
+            case DrawMethod.Polyhedral:
+                index = computePolyhedralSchemeCoords(x, y, canvasSize, canvasZoom, scheme.settings)
+                break
+            case DrawMethod.Circle:
+                index = computeSchemeCoords(x, y, canvasSize, canvasZoom, scheme.settings)
+                break
+        }
         if (index === -1) return
         scheme.beads[index] = selectedColorIndex + 1
         setScheme({...scheme})
@@ -298,20 +320,67 @@ const CrochetCirclePage = () => {
                         Свойства
                     </Button>
 
-                    <ToggleButtonGroup
-                        value={isDebug}
-                        exclusive
-                        onChange={() => setDebug(!isDebug)}
-                        size="small"
-                        sx={{height: 36.5}}
-                    >
-                        <ToggleButton value={true} color="primary">
-                            <Tooltip title="Отладка">
-                                <BugReport/>
-                            </Tooltip>
-                        </ToggleButton>
-                    </ToggleButtonGroup>
+                    <div>
+                        <Button
+                            id="show-view-menu"
+                            variant="outlined"
+                            disableElevation
+                            aria-haspopup="true"
+                            startIcon={<ViewComfy/>}
+                            aria-controls={showViewSettings ? 'view-menu' : undefined}
+                            aria-expanded={showViewSettings ? 'true' : undefined}
+                            onClick={event => setViewAnchorEl(event.currentTarget)}
+                        >
+                            Вид
+                        </Button>
 
+                        <Menu
+                            id="view-menu"
+                            anchorEl={viewAnchorEl}
+                            open={showViewSettings}
+                            onClose={() => setViewAnchorEl(null)}
+                        >
+                            <ListSubheader>
+                                Отображение
+                            </ListSubheader>
+
+                            { [
+                                { method: DrawMethod.Polyhedral, label: "Многоугольник"},
+                                { method: DrawMethod.Circle, label: "Круг с волнами"}
+                            ].map((data) =>
+                                <MenuItem key={data.method} onClick={() => setViewerMethod(data.method)}>
+                                    <ListItemIcon>
+                                        <Radio
+                                            edge="start"
+                                            checked={viewerMethod === data.method}
+                                            onChange={() => {}}
+                                            disableRipple={true}
+                                            size="medium"
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText>{data.label}</ListItemText>
+                                </MenuItem>
+                            )}
+
+                            <Divider sx={{my: 0.5}}/>
+
+                            <MenuItem onClick={() => setDebug(!isDebug)}>
+                                <ListItemIcon>
+                                    <Checkbox
+                                        edge="start"
+                                        checked={isDebug}
+                                        onChange={() => {
+                                        }}
+                                        disableRipple={true}
+                                        size="medium"
+                                    />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Отладка
+                                </ListItemText>
+                            </MenuItem>
+                        </Menu>
+                    </div>
                 </Stack>
             </Paper>
 

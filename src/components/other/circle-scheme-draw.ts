@@ -1,5 +1,9 @@
 import {CircleScheme, SchemeColor, SchemeSettings} from "types/crochet-types";
 
+export enum DrawMethod {
+    Polyhedral= "polyhedral",
+    Circle = "circle"
+}
 
 export const drawScheme = (
     canvas: CanvasRenderingContext2D,
@@ -34,7 +38,6 @@ export const drawScheme = (
     const beadWidth = beadHeight * 0.8
 
     const startParts = parts;
-    const startBeatSize = 10
 
 
     const step = 0.5
@@ -42,17 +45,18 @@ export const drawScheme = (
         canvas.beginPath();
         canvas.fillStyle = "#000000"
         canvas.lineWidth = 4
-        for (let j = 0; j < radius - 1; j += step) {
-            const angle = (angleOffset + partAngle * i + swingIn(1 - j / radius) * parts) * Math.PI / 180
-            const angle2 = (angleOffset + partAngle * i + swingIn(1 - (j + step) / radius) * parts) * Math.PI / 180
 
-            canvas.moveTo(
-                cw + Math.cos(angle) * beadHeight * (j + 1.5),
-                ch + Math.sin(angle) * beadHeight * (j + 1.5 )
-            );
+        canvas.moveTo(cw, ch);
+
+        for (let j = 1; j < radius - step; j += step) {
+            const radiusPartAngle1 = 360 / (parts * (j + 1.0))
+            const angle = (
+                angleOffset - radiusPartAngle1 + partAngle * i + swingIn(1 - j / radius) * parts
+            ) * Math.PI / 180
+
             canvas.lineTo(
-                cw + Math.cos(angle2) * beadHeight * (j + step + 1.5),
-                ch + Math.sin(angle2) * beadHeight * (j + step + 1.5)
+                cw + Math.cos(angle) * beadHeight * (j + 1.5),
+                ch + Math.sin(angle) * beadHeight * (j + 1.5)
             );
         }
         canvas.stroke();
@@ -109,7 +113,7 @@ export const drawScheme = (
 
             if (isDebug) {
                 canvas.fillStyle = "#000000"
-                canvas.fillText((i + prevParts).toString(), x + beadWidth / 3, y + beadHeight / 2);
+                canvas.fillText((i + prevParts).toString(), x - beadWidth * 0.45, y + 2);
             }
         }
 
@@ -288,38 +292,50 @@ export const computeSchemeCoords = (
     const center = (size * scale) / 2;
     const r = Math.sqrt(Math.pow(x - center, 2) + Math.pow(y - center, 2))
 
-    console.log(`Size: ${size * scale}; Center: ${center}; Radius: ${r}; XY: ${x} - ${y}`)
+    const {parts, radius} = settings;
 
+    const beadPaddingCount = 1 // start padding
+    const angleOffset = -180;
 
-    let startBeatSize = 10
-    let beatSize = startBeatSize * scale;
-    let spacing = startBeatSize * 1.5 * scale;
+    const partAngle = (360 / parts)
+    const schemaHeight = center * 0.8
+    const schemaLevelHeight = schemaHeight / (radius + beadPaddingCount)
 
-    console.log(`Scale: ${scale}; Size: ${beatSize}; Spacing: ${spacing}`)
+    const beadHeight = schemaLevelHeight
+    const beadWidth = beadHeight * 0.8
 
-    let level = -1
-    let dist = settings.radius * spacing
+    const level = (r - beadHeight) / beadHeight
+    if (level < 0 || level >= radius) {
+        return -1
+    }
+    const levelIndex = Math.trunc(level)
+    // console.log(`Radius: ${r}; Level: ${levelIndex}`)
 
-    for (let i = 0; i < settings.radius; i++) {
-        const currentDist = Math.abs((i + 1) * spacing - r)
-        if (currentDist < dist && currentDist < beatSize / 1.5) {
-            dist = currentDist
-            level = i
-        }
+    const offset = swingIn(1 - levelIndex / radius) * parts
+    let angle = Math.atan((y - center) / (x - center)) * 180 / Math.PI + 90
+    if (x - center < 0) angle += 180
+
+    // console.log(offset, beadWidth / 2)
+    angle = (angle - offset - angleOffset - 90) % 360
+
+    const levelAngle = 360 / ((levelIndex + 1) * parts)
+    const order = angle / levelAngle
+    let orderIndex = Math.round(order)
+    if (orderIndex === (levelIndex + 1) * parts) {
+        orderIndex = 0
     }
 
-    if (level === -1) return -1
+    const index = (parts + levelIndex * parts) / 2 * levelIndex + orderIndex
+
+    console.log(`Angle: ${angle}; Order: ${order}; Index: ${index}`, 2 * Math.PI * r)
+
+    /*
+
 
     let smallBeat = 360 / ((level + 1) * settings.parts)
     console.log(`Level: ${level}; Level angle: ${smallBeat}`)
 
-    /*
-    let clins = level * schemeSettings.parts
-    for (let i = 0; i < clins; i++) {
-        let angle = (360 / clins) * i;
-        console.log(angle)
-    }
-     */
+
 
     let angle = Math.atan((y - center) / (x - center)) * 180 / Math.PI + 90
     if (x - center < 0) angle += 180
@@ -331,6 +347,7 @@ export const computeSchemeCoords = (
 
     let index = (settings.parts + level * settings.parts) / 2 * level + order
     console.log(`Angle: ${angle}; Order: ${order}; Index: ${index}`)
+    */
 
     return index
 }
