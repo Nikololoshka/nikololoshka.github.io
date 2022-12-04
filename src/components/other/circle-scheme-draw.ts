@@ -22,7 +22,6 @@ export const drawScheme = (
     // Отчистка и стартовая точка
     canvas.clearRect(0, 0, w, h);
     canvas.fillStyle = '#000000';
-    canvas.fillRect(cw - 5, ch - 5, 10, 10);
 
 
     const {parts, radius} = scheme.settings;
@@ -35,7 +34,7 @@ export const drawScheme = (
     const schemaLevelHeight = schemaHeight / (radius + beadPaddingCount)
 
     const beadHeight = schemaLevelHeight
-    const beadWidth = beadHeight * 0.8
+    const beadWidth = 2 * Math.PI * (beadHeight * (radius + 1.5)) / ((radius + 1) * parts)
 
     const startParts = parts;
 
@@ -101,8 +100,8 @@ export const drawScheme = (
             canvas.ellipse(
                 x,
                 y,
-                beadHeight * 0.45,
-                beadWidth * 0.45,
+                beadHeight * 0.5,
+                beadWidth * 0.5,
                 angle,
                 0,
                 2 * Math.PI,
